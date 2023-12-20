@@ -1,0 +1,90 @@
+server:
+  port: 8080
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    enabled-by-default: true
+    web:
+      base-path: /actuator
+      exposure:
+        include: '*'
+
+spring:
+  application:
+    name: dev-demo
+  config:
+    import:
+      - optional:nacos:api?group=demo
+  boot:
+    admin:
+      client:
+        url: http://10.1.33.57:9080
+        instance:
+          prefer-ip: true # 使用ip注册进来
+  datasource:  #JPA
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@10.1.33.46:1521:oracle10
+    username: his
+    password: his
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle12cDialect
+        format_sql: true
+  data:
+    redis:
+      host: 39.103.174.23
+      port: 6379
+      database: 0
+      password: "honlivhp@123"
+  cloud:
+    nacos: #服务注册发现
+      discovery:
+        server-addr: 10.1.33.57:8848
+        namespace: b00af556-f7d6-40c9-aff0-5ccc3adf90ef
+        group: demo
+        username: nacos
+        password: nacos
+      config: #配置中心
+        server-addr: 10.1.33.57:8848
+        namespace: b00af556-f7d6-40c9-aff0-5ccc3adf90ef
+        username: nacos
+        password: nacos
+        file-extension: yaml
+#        import-check:
+#          enabled: false
+    sentinel: #Sentinel
+      transport:
+        port: 8859
+        dashboard: 10.1.33.57:8858
+      eager: true
+  rabbitmq:
+    host: 10.1.33.53
+    port: 5672
+    username: honliv
+    password: 123456
+    virtual-host: /
+    template:
+      exchange: demo-exchange
+      routing-key: demo-001
+
+seata:
+  tx-service-group: demo-test
+#  config:
+#    nacos:
+#      server-addr: 10.1.33.57:8848
+#      namespace: b00af556-f7d6-40c9-aff0-5ccc3adf90ef
+#      username: nacos
+#      password: nacos
+#      group: seata
+
+logging:
+  level:
+    # 基本类型绑定
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    # 枚举类型绑定
+    org.hibernate.metamodel.model.convert.internal.NamedEnumValueConverter: trace

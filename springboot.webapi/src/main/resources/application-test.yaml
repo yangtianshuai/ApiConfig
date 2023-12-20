@@ -1,0 +1,41 @@
+server:
+  port: 8080
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    enabled-by-default: true
+    web:
+      base-path: /actuator
+      exposure:
+        include: '*'
+spring:
+  application:
+    name: test-demo
+  config:
+    import:
+      - optional:nacos:api?group=demo&refresh=true
+      - optional:nacos:spring-boot-admin?group=demo&refresh=true
+      - optional:nacos:his-database?group=demo&refresh=true
+      - optional:nacos:redis?group=demo&refresh=true
+      - optional:nacos:spring-boot-log?group=demo&refresh=true
+      - optional:nacos:sentinel?group=demo&refresh=true
+  cloud:
+    nacos: #服务注册发现
+      discovery:
+        server-addr: 10.1.33.57:8848
+        namespace: 9f16c716-443a-4e9f-8b4f-d467c1fc53ac
+        group: demo
+        ip: 10.1.33.55
+        port: 8091
+        username: nacos
+        password: nacos
+      config: #配置中心
+        server-addr: 10.1.33.57:8848
+        namespace: 9f16c716-443a-4e9f-8b4f-d467c1fc53ac
+        username: nacos
+        password: nacos
+        file-extension: yaml
+        import-check:
+          enabled: false
