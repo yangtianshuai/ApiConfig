@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="spring-cloud-api.config-starter:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/jar</output-path>
+    <output-path>$PROJECT_DIR$/../micro-service/lib</output-path>
     <root id="archive" name="spring-cloud-api.config-starter.jar">
       <element id="module-output" name="config-starter" />
       <element id="module-output" name="api.config" />

@@ -13,14 +13,14 @@ public class SsoCookie {
     /**
      Cookie
      */
-    String ID;
+    public String ID;
     /**
      用户ID
      */
-    String UserID;
-    String Name;
+    public String UserID;
+    public String Name;
 
-    String EmployeeId;
+    public String EmployeeId;
     public String Raw;
 
     public final String GetCookie()
