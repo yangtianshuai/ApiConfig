@@ -6,7 +6,7 @@
 
   <groupId>com.honlivhp</groupId>
   <artifactId>config-starter</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.3</version>
   <name>spring-cloud-starter-api.config</name>
     <build>
         <plugins>
@@ -14,8 +14,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>com.honlivhp</groupId>
       <artifactId>api.config</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.3</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>

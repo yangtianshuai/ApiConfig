@@ -1,6 +1,5 @@
 package api.config.sso;
 
-import com.sun.istack.internal.Nullable;
 
 public interface ISsoHandler {
     /**
@@ -19,7 +18,7 @@ public interface ISsoHandler {
      * SSO验证     *
      * @param cache_flag 缓存标记
      */
-    void Validate(@Nullable Boolean cache_flag);
+    void Validate(Boolean cache_flag);
 
     /**
      * 判断是否为登出请求
@@ -27,7 +26,7 @@ public interface ISsoHandler {
      * @param path 请求路由
      * @return 是否为登出请求
      */
-    Boolean IsLogout(@Nullable String path);
+    Boolean IsLogout(String path);
 
     /**
      * 退出登录

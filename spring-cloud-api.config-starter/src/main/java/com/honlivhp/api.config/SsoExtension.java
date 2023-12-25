@@ -3,12 +3,12 @@ package com.honlivhp.api.config;
 import api.config.sso.SsoMode;
 import api.config.sso.SsoRequest;
 import api.config.utility.StringUtil;
-import com.sun.jndi.toolkit.url.Uri;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ public class SsoExtension {
             }
             if (!StringUtil.isNullOrEmpty(url)) {
                 url = URLDecoder.decode(url);
-                Uri uri = new Uri(url);
-                _request.Scheme = uri.getScheme();
+                URL uri = new URL(url);
+                _request.Scheme = uri.getProtocol();
                 _request.Host = uri.getHost();
                 _request.Port = uri.getPort();
                 _request.Path = uri.getPath();
@@ -65,7 +65,7 @@ public class SsoExtension {
 
     private static Map<String, List<String>> getQuery(String url) throws MalformedURLException {
 
-        Uri uri = new Uri(URLDecoder.decode(url));
+        URL uri = new URL(URLDecoder.decode(url));
         String query = uri.getQuery();
         Map<String, List<String>> parameters = new HashMap<>();
         String[] pairs = query.split("&");

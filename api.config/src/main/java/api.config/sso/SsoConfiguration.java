@@ -4,7 +4,6 @@ import api.config.sso.cas.CasHandler;
 import api.config.sso.oauth2.OAuth2Handler;
 import api.config.sso.oauth2.OAuth2Options;
 import api.config.utility.StringUtil;
-import com.sun.istack.internal.Nullable;
 
 public class SsoConfiguration {
 
@@ -27,7 +26,7 @@ public class SsoConfiguration {
         return new CasHandler(_options);
     }
 
-    public ISsoHandler useOAuth2(@Nullable OAuth2Options options){
+    public ISsoHandler useOAuth2(OAuth2Options options){
         if(oauth2_options == null){
             if(options == null){
                 options = new OAuth2Options();
