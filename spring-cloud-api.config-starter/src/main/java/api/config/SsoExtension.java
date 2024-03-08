@@ -74,10 +74,8 @@ public class SsoExtension {
         return _request;
     }
 
-    private static Map<String, List<String>> getQuery(String url) throws MalformedURLException, UnsupportedEncodingException {
+    private static Map<String, List<String>> getQuery(String query) throws MalformedURLException, UnsupportedEncodingException {
 
-        URL uri = new URL(URLDecoder.decode(url,"UTF-8"));
-        String query = uri.getQuery();
         Map<String, List<String>> parameters = new HashMap<>();
         String[] pairs = query.split("&");
         for (String pair : pairs) {
