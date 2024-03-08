@@ -11,4 +11,7 @@ public class OAuth2Parameter extends SsoParameter {
     public static String Secret = "secret";
     //authorization_code、password、refresh_token
     public static String GrantType = "grant_type";
+
+    public static String RefreshToken = "refresh_token";
+    public static String Expire = "expires_in";
 }

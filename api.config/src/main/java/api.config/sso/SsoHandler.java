@@ -1,9 +1,12 @@
 package api.config.sso;
 
 import api.config.net.HttpClient;
+import api.config.sso.cas.CasApi;
 import api.config.sso.cas.CasParameter;
 import api.config.utility.StringUtil;
 import com.alibaba.fastjson.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public abstract class SsoHandler implements ISsoHandler {
@@ -32,7 +35,7 @@ public abstract class SsoHandler implements ISsoHandler {
     }
 
     @Override
-    public void Logout(String token,Boolean redirect_flag) {
+    public Boolean Logout(String token,Boolean redirect_flag) throws UnsupportedEncodingException {
         SsoCookie cookie = null;
         if (StringUtil.isNullOrEmpty(token) && _request.Query.containsKey(SsoParameter.TICKET)) {
             token = _request.Query.get(SsoParameter.TICKET).get(0);
@@ -46,14 +49,17 @@ public abstract class SsoHandler implements ISsoHandler {
 
         //认证服务通知时，不需要跳转
         if (!redirect_flag) {
-            return;
+            return true;
         }
 
-        String url = _options.GetBaseURL(_request.RequestHost) + "/" + SsoApi.LOGOUT
+        String url = _options.GetBaseURL(_request.OriginHost) + "/" + SsoApi.LOGOUT
                 + "?" + SsoParameter.AppID + "=" + _options.AppID
                 + "&" + SsoParameter.TICKET + "=" + token
-                + "&" + SsoParameter.RedirectUri + "=" + URLEncoder.encode(_request.GetURL());
-        _request.CallBack.Redirect.apply(url);
+                + "&" + SsoParameter.RedirectUri + "=" + URLEncoder.encode(_request.GetURL(),"UTF-8");
+
+        RedirectModel redirect = new RedirectModel(_options.Mode);
+        redirect.url = url;
+        return _request.CallBack.Redirect.apply(redirect);
     }
 
     protected void HttpRequest(String url) {
@@ -90,7 +96,41 @@ public abstract class SsoHandler implements ISsoHandler {
         return false;
     }
 
-    protected String getWebUrl(){
+    protected Boolean ValidateSSO(Boolean cache_flag) throws UnsupportedEncodingException {
+        String ticket = _request.Ticket;
+        if(_request.Query.containsKey(CasParameter.TICKET)){
+            ticket = _request.Query.get(CasParameter.TICKET).get(0);
+        }
+        String service = URLEncoder.encode(_request.GetURL(),"UTF-8");
+        String url = "";
+        if (cache_flag && Exist(ticket))
+        {
+            _request.CallBack.Validate.apply(_options.Cookie.GetCookie(ticket));
+        }
+        else
+        {
+            String logoutUrl = _request.OriginHost;
+            if (_options.LogoutPath.length() > 0 && _options.LogoutPath.charAt(0) != '/')
+            {
+                logoutUrl += '/';
+            }
+            logoutUrl += _options.LogoutPath;
+            String param = CasParameter.AppID + "=" + _options.AppID
+                    + "&" + CasParameter.TICKET + "=" + ticket
+                    + "&" + CasParameter.LogoutPath + "=" + URLEncoder.encode(logoutUrl,"UTF-8");
+
+            url = _options.GetBaseURL(_request.OriginHost, true) + "/" + CasApi.VALIDATE + "?" + param;
+
+            HttpRequest(url, ticket);
+        }
+
+        RedirectModel redirect = new RedirectModel(_options.Mode);
+        redirect.url = getWebUrl();
+        redirect.repeat_check = true;
+        return _request.CallBack.Redirect.apply(redirect);
+    }
+
+    private String getWebUrl(){
         String url = _request.GetURL();
         if (_request.Query.containsKey(SsoParameter.TICKET))
         {
@@ -106,7 +146,7 @@ public abstract class SsoHandler implements ISsoHandler {
         return url;
     }
 
-    public abstract void Validate(Boolean cache_flag);
+    public abstract Boolean Validate(Boolean cache_flag) throws UnsupportedEncodingException;
 
     @Override
     public Boolean Exist(String token)

@@ -6,19 +6,31 @@ import java.util.Map;
 
 public class SsoRequest
 {
+    public Map<String, List<String>> OriginQuery;
     public Map<String, List<String>> Query;
     public Map<String, String> Cookie;
     public SsoRequest()
     {
+        OriginQuery = new HashMap<>();
         Query = new HashMap<>();
         Cookie = new HashMap<>();
         CallBack = new SsoCallback();
     }
+
+    public String Ticket;
+
+    /**
+     * 原始Scheme
+     */
+    public String OriginScheme;
+    /**
+     * 内部Request
+     */
+    public String OriginHost;
+    public String OriginPath;
+
     public String Scheme;
-    /// <summary>
-    /// 内部Request
-    /// </summary>
-    public String RequestHost;
+
     public String Host;
     public int Port;
     public String Path;

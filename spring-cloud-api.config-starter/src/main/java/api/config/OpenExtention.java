@@ -1,4 +1,4 @@
-package com.honlivhp.api.config;
+package api.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 

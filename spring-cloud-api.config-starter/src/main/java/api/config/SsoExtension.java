@@ -1,12 +1,17 @@
-package com.honlivhp.api.config;
+package api.config;
+
 
 import api.config.sso.SsoMode;
 import api.config.sso.SsoRequest;
 import api.config.utility.StringUtil;
+import io.micrometer.common.lang.Nullable;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -20,9 +25,15 @@ public class SsoExtension {
     public static SsoRequest GetRequest(HttpServletRequest request, SsoMode casMode) throws IOException {
         SsoRequest _request = new SsoRequest();
 
-        _request.Scheme = request.getScheme();
-        _request.Host = request.getRemoteHost();
-        _request.Path = request.getContextPath();
+        _request.OriginScheme = request.getScheme();
+        _request.OriginHost = request.getRemoteHost();
+        _request.OriginPath = request.getContextPath();
+
+        _request.Scheme = _request.OriginScheme;
+        _request.Host = _request.OriginHost;
+        _request.Path = _request.OriginPath;
+
+        _request.OriginQuery = getQuery(request.getQueryString());
 
         if (casMode == SsoMode.Proxy) {
             String url = request.getHeader("url");
@@ -30,7 +41,7 @@ public class SsoExtension {
                 url = request.getHeader("referer");
             }
             if (!StringUtil.isNullOrEmpty(url)) {
-                url = URLDecoder.decode(url);
+                url = URLDecoder.decode(url,"UTF-8");
                 URL uri = new URL(url);
                 _request.Scheme = uri.getProtocol();
                 _request.Host = uri.getHost();
@@ -39,7 +50,7 @@ public class SsoExtension {
                 _request.Query = getQuery(uri.getQuery());
             }
         } else {
-            _request.Query = getQuery(request.getQueryString());
+            _request.Query = _request.OriginQuery;
             Cookie[] cookies = request.getCookies();
             for (Cookie cookie : cookies) {
                 if (!_request.Query.containsKey(cookie.getName())) {
@@ -63,9 +74,9 @@ public class SsoExtension {
         return _request;
     }
 
-    private static Map<String, List<String>> getQuery(String url) throws MalformedURLException {
+    private static Map<String, List<String>> getQuery(String url) throws MalformedURLException, UnsupportedEncodingException {
 
-        URL uri = new URL(URLDecoder.decode(url));
+        URL uri = new URL(URLDecoder.decode(url,"UTF-8"));
         String query = uri.getQuery();
         Map<String, List<String>> parameters = new HashMap<>();
         String[] pairs = query.split("&");
@@ -84,5 +95,37 @@ public class SsoExtension {
             }
         }
         return parameters;
+    }
+
+    private static String sso_pass_key = "sso_pass";
+    public static void SetSsoPass(HttpServletResponse response)
+    {
+        response.addHeader(sso_pass_key, "true");
+        AddHeader(response, "Access-Control-Expose-Headers", sso_pass_key, true, ",");
+    }
+    public static Boolean CheckSso(HttpServletResponse response)
+    {
+        String cas = response.getHeader(sso_pass_key);
+        return cas.equals("true");
+    }
+
+    public static void AddHeader(HttpServletResponse response, String header, String value, @Nullable Boolean check,@Nullable String split)
+    {
+        if (response.containsHeader(header))
+        {
+            String header_value = response.getHeader(header);
+            if (check)
+            {
+                if (!header_value.contains(value))
+                {
+                    header_value = header_value + split + value;
+                }
+            }
+            response.setHeader(header,header_value);
+        }
+        else
+        {
+            response.addHeader(header, value);
+        }
     }
 }

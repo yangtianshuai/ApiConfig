@@ -1,4 +1,4 @@
-package com.honlivhp.api.config;
+package api.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

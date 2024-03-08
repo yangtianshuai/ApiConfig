@@ -1,4 +1,4 @@
-package com.honlivhp.api.config;
+package api.config;
 
 import api.config.auth.NoAuthorization;
 import api.config.auth.Open;
@@ -21,11 +21,11 @@ public abstract class AuthFilter implements HandlerInterceptor {
     /**
      * 白名单包含？
      */
-    protected Boolean WhiteListContain;
+    protected Boolean WhiteListContain = false;
     /**
      * 包含NoAuthorization注解
      */
-    protected Boolean NoAuthAttr;
+    protected Boolean NoAuthAttr = false;
     /// <summary>
     /// 请求客户端IP
     /// </summary>

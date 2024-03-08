@@ -24,5 +24,5 @@ public class SsoParameter {
     /// <summary>
     /// redirect
     /// </summary>
-    static String Redirect = "redirect";
+    public static String Redirect = "redirect";
 }

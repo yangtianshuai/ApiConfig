@@ -6,7 +6,7 @@ public class SsoCallback {
     /// <summary>
     /// 跳转回调
     /// </summary>
-    public Function<String,Void> Redirect;
+    public Function<RedirectModel,Boolean> Redirect;
     /// <summary>
     /// 验证回调
     /// </summary>

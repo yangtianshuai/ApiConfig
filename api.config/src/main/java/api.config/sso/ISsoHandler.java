@@ -1,6 +1,8 @@
 package api.config.sso;
 
 
+import java.io.UnsupportedEncodingException;
+
 public interface ISsoHandler {
     /**
      * 获取SSO配置     *
@@ -18,7 +20,7 @@ public interface ISsoHandler {
      * SSO验证     *
      * @param cache_flag 缓存标记
      */
-    void Validate(Boolean cache_flag);
+    Boolean Validate(Boolean cache_flag) throws UnsupportedEncodingException;
 
     /**
      * 判断是否为登出请求
@@ -33,7 +35,7 @@ public interface ISsoHandler {
      * @param token 令牌
      * @param redirect_flag 是否跳转
      */
-    void Logout(String token,Boolean redirect_flag);
+    Boolean Logout(String token,Boolean redirect_flag) throws UnsupportedEncodingException;
     /// <summary>
     /// 是否已存在Cookie
     /// </summary>
