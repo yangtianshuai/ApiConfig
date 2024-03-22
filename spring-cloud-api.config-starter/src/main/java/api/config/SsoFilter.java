@@ -20,6 +20,8 @@ public abstract class SsoFilter extends AuthFilter {
 
     private Boolean sso_pass = false;
 
+    protected HttpServletResponse response;
+
 
     public SsoFilter(ISsoHandler ssoHandler){
         _ssoHandler = ssoHandler;
@@ -62,6 +64,8 @@ public abstract class SsoFilter extends AuthFilter {
         if(no_sso != null) {
             return true;
         }
+
+        this.response = response;
 
         SsoRequest sso_request = SsoExtension.GetRequest(request,_options.Mode);
         sso_request.ClientIP = ClientIp;

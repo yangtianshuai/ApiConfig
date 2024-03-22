@@ -57,7 +57,7 @@ public class CookieHost {
         if (_cookies.containsKey(st))
         {
             SsoCookie cookie = _cookies.get(st);
-            if (cookie.Time.plusSeconds(expires).compareTo(LocalDateTime.now()) == 1)
+            if (cookie.Time.plusSeconds(expires).compareTo(LocalDateTime.now()) == -1)
             {
                 _cookies.remove(st);
                 return false;

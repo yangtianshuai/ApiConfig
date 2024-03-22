@@ -52,9 +52,12 @@ public class SsoExtension {
         } else {
             _request.Query = _request.OriginQuery;
             Cookie[] cookies = request.getCookies();
-            for (Cookie cookie : cookies) {
-                if (!_request.Query.containsKey(cookie.getName())) {
-                    _request.Cookie.put(cookie.getName(), cookie.getValue());
+
+            if(cookies!=null) {
+                for (Cookie cookie : cookies) {
+                    if (!_request.Query.containsKey(cookie.getName())) {
+                        _request.Cookie.put(cookie.getName(), cookie.getValue());
+                    }
                 }
             }
 
@@ -107,6 +110,9 @@ public class SsoExtension {
     public static Boolean CheckSso(HttpServletResponse response)
     {
         String cas = response.getHeader(sso_pass_key);
+        if(StringUtil.isNullOrEmpty(cas)){
+            return false;
+        }
         return cas.equals("true");
     }
 
