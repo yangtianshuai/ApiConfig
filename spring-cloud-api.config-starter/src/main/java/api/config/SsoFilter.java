@@ -20,6 +20,7 @@ public abstract class SsoFilter extends AuthFilter {
 
     private Boolean sso_pass = false;
 
+    protected HttpServletRequest request;
     protected HttpServletResponse response;
 
 
@@ -65,6 +66,7 @@ public abstract class SsoFilter extends AuthFilter {
             return true;
         }
 
+        this.request = request;
         this.response = response;
 
         SsoRequest sso_request = SsoExtension.GetRequest(request,_options.Mode);
