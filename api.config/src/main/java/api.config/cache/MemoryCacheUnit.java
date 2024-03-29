@@ -7,7 +7,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MemoryCacheUnit implements ICacheUnit {
 
-
     ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     private static Map<String, CacheItem> _cache;

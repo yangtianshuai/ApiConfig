@@ -27,7 +27,7 @@ public class SsoExtension {
 
         _request.OriginScheme = request.getScheme();
         _request.OriginHost = request.getRemoteHost();
-        _request.OriginPath = request.getContextPath();
+        _request.OriginPath = request.getContextPath() + request.getServletPath();
 
         _request.Scheme = _request.OriginScheme;
         _request.Host = _request.OriginHost;
