@@ -88,7 +88,7 @@ public abstract class SsoFilter extends AuthFilter {
                 }
                 else
                 {
-                    CacheUnit.Current.set(key, LocalDateTime.now(), Duration.ofSeconds(10));
+                    CacheUnit.Current.set(key, LocalDateTime.now(), Duration.ofSeconds(5));
                 }
             }
 
@@ -104,7 +104,7 @@ public abstract class SsoFilter extends AuthFilter {
 
             if (StringUtil.isNullOrEmpty(rt.url))
             {
-                response.setStatus(204);
+                response.setStatus(403);
                 return false;
             }
 

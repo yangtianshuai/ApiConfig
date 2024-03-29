@@ -15,15 +15,18 @@ public interface ICacheUnit
      * 设置缓存
      * @param key 键
      * @param value 值
+     * @param timeSpan 超时时间
      * @return 是否设置成功
      */
-    Boolean set(String key, Object value, Duration timeSpan);
+    void set(String key, Object value, Duration timeSpan);
 
-    /// <summary>
-    /// 清除缓存
-    /// </summary>
-    /// <param name="key">键</param>
-    /// <returns></returns>
+    /**
+     * 设置缓存
+     * @param key 键
+     * @param value 值
+     * @return 是否设置成功
+     */
+    void set(String key, Object value);
 
     /**
      * 清除缓存
