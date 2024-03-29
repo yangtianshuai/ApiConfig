@@ -5,7 +5,7 @@ import java.time.Duration;
 public class CacheUnit {
     public static ICacheUnit Current;
 
-    protected static Duration out_time;
+    protected static Duration out_time = Duration.ofSeconds(60*30);
 
     public CacheUnit(ICacheUnit cacheUnit)
     {
@@ -13,6 +13,6 @@ public class CacheUnit {
     }
 
     public void setOutTime(int second){
-        out_time = Duration.ofSeconds(1);
+        out_time = Duration.ofSeconds(second);
     }
 }
