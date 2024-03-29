@@ -31,7 +31,7 @@ public abstract class SsoHandler implements ISsoHandler {
         {
             path = _request.Path;
         }
-        return path.toLowerCase() == _options.LogoutPath.toLowerCase();
+        return path.toLowerCase().equals(_options.LogoutPath.toLowerCase());
     }
 
     @Override
