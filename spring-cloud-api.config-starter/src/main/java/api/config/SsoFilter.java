@@ -4,6 +4,7 @@ import api.config.auth.NoSso;
 import api.config.cache.CacheUnit;
 import api.config.sso.*;
 import api.config.utility.StringUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -18,11 +19,7 @@ public abstract class SsoFilter extends AuthFilter {
     private ISsoHandler _ssoHandler;
     private SsoOptions _options;
 
-    private Boolean sso_pass = false;
-
-    protected HttpServletRequest request;
-    protected HttpServletResponse response;
-
+    private boolean sso_pass = false;
 
     public SsoFilter(ISsoHandler ssoHandler){
         _ssoHandler = ssoHandler;
@@ -50,7 +47,7 @@ public abstract class SsoFilter extends AuthFilter {
         sso_pass = true;
     }
 
-    public Boolean filter(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws IOException {
+    public boolean filter(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws IOException {
 
         if (WhiteListContain)
         {
@@ -65,9 +62,6 @@ public abstract class SsoFilter extends AuthFilter {
         if(no_sso != null) {
             return true;
         }
-
-        this.request = request;
-        this.response = response;
 
         SsoRequest sso_request = SsoExtension.GetRequest(request,_options.Mode);
         sso_request.ClientIP = ClientIp;
@@ -97,7 +91,7 @@ public abstract class SsoFilter extends AuthFilter {
                 return true;
             }
 
-            if (sso_request.GetURL() == rt.url && SsoExtension.CheckSso(response))
+            if (sso_request.GetURL().equals(rt.url) && SsoExtension.CheckSso(response))
             {
                 return true;
             }
@@ -109,16 +103,14 @@ public abstract class SsoFilter extends AuthFilter {
             }
 
             response.addHeader("redirect-url", rt.url);
-            Integer redirect_status = 302;
+            SsoExtension.setCors(response,sso_request);
+
+            int redirect_status = 302;
             if (rt.mode.equals(SsoMode.Proxy))
             {
-                response.addHeader("Access-Control-Expose-Headers", "redirect-url");
-                response.setStatus(redirect_status);
+                HttpExtension.current().addHeader(response, "Access-Control-Expose-Headers", "redirect-url", true);
             }
-            else
-            {
-                response.setStatus(redirect_status);
-            }
+            response.setStatus(redirect_status);
             return false;
         });
 
@@ -139,7 +131,7 @@ public abstract class SsoFilter extends AuthFilter {
             //已经通过验证
             if (_ssoHandler.IsLogout(sso_request.OriginPath))
             {
-                Boolean redirect_flag = true;
+                boolean redirect_flag = true;
                 if(sso_request.OriginQuery.containsKey(SsoParameter.Redirect)){
                     redirect_flag = sso_request.OriginQuery.get(SsoParameter.Redirect).get(0) != "no";
                 }
@@ -147,6 +139,7 @@ public abstract class SsoFilter extends AuthFilter {
             }
             else
             {
+                SsoExtension.setCors(response,sso_request);
                 SsoExtension.SetSsoPass(response);
             }
             return true;

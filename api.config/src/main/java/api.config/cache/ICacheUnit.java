@@ -33,5 +33,5 @@ public interface ICacheUnit
      * @param key
      * @return 是否删除成功
      */
-    Boolean clear(String key);
+    boolean clear(String key);
 }

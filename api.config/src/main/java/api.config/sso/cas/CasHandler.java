@@ -16,7 +16,7 @@ public class CasHandler extends SsoHandler {
     }
 
     @Override
-    public Boolean Validate(Boolean cache_flag) throws UnsupportedEncodingException {
+    public boolean Validate(boolean cache_flag) throws UnsupportedEncodingException {
         if (_request.Query.containsKey(CasParameter.AccessToken))
         {
             String url = _options.GetBaseURL(_request.OriginHost);

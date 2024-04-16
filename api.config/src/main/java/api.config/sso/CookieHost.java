@@ -48,7 +48,7 @@ public class CookieHost {
     /// </summary>
     /// <param name="st">临时票据</param>
     /// <returns></returns>
-    public Boolean Contain(String st)
+    public boolean Contain(String st)
     {
         if (st == null)
         {

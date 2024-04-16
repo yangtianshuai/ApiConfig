@@ -19,7 +19,7 @@ public class SsoOptions {
     /*
      *
      */
-    public String GetBaseURL(String host, Boolean validate)
+    public String GetBaseURL(String host, boolean validate)
     {
         if (IPMappings != null && IPMappings.size() > 0)
         {
@@ -51,7 +51,7 @@ public class SsoOptions {
     /// <summary>
     /// 是否强制使用HTTPS协议
     /// </summary>
-    public Boolean ForceHTTPS = false;
+    public boolean ForceHTTPS = false;
     /// <summary>
     /// Cookie内部管理器
     /// </summary>

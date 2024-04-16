@@ -24,7 +24,7 @@ public class OAuth2Handler extends SsoHandler {
     }
 
     @Override
-    public Boolean Validate(Boolean cache_flag) throws UnsupportedEncodingException {
+    public boolean Validate(boolean cache_flag) throws UnsupportedEncodingException {
         String url = "";
         if (_request.OriginPath.toLowerCase() == _options2.RedictUri.toLowerCase())
         {
@@ -140,7 +140,7 @@ public class OAuth2Handler extends SsoHandler {
         if (!StringUtil.isNullOrEmpty(response)) {
 
             JSONObject res = JSONObject.parseObject(response);
-            if (res.get("code").toString() == "1") {
+            if (res.get("code").toString().equals("1")) {
                 //expires_in = temp_ticket.Expire,
                 //refresh_token
                 return res.get("access_token").toString();
@@ -169,7 +169,7 @@ public class OAuth2Handler extends SsoHandler {
         if (!StringUtil.isNullOrEmpty(response)) {
 
             JSONObject res = JSONObject.parseObject(response);
-            if (res.get("code").toString() == "1") {
+            if (res.get("code").toString().equals("1")) {
                 //expires_in = temp_ticket.Expire,
                 //refresh_token
                 return res.get("access_token").toString();

@@ -20,7 +20,7 @@ public interface ISsoHandler {
      * SSO验证     *
      * @param cache_flag 缓存标记
      */
-    Boolean Validate(Boolean cache_flag) throws UnsupportedEncodingException;
+    boolean Validate(boolean cache_flag) throws UnsupportedEncodingException;
 
     /**
      * 判断是否为登出请求
@@ -28,14 +28,14 @@ public interface ISsoHandler {
      * @param path 请求路由
      * @return 是否为登出请求
      */
-    Boolean IsLogout(String path);
+    boolean IsLogout(String path);
 
     /**
      * 退出登录
      * @param token 令牌
      * @param redirect_flag 是否跳转
      */
-    Boolean Logout(String token,Boolean redirect_flag) throws UnsupportedEncodingException;
+    boolean Logout(String token,boolean redirect_flag) throws UnsupportedEncodingException;
     /// <summary>
     /// 是否已存在Cookie
     /// </summary>
@@ -47,5 +47,5 @@ public interface ISsoHandler {
      * @param token 令牌
      * @return 是否存在
      */
-    Boolean Exist(String token);
+    boolean Exist(String token);
 }

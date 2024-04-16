@@ -7,6 +7,7 @@
     <groupId>ApiConfig</groupId>
     <artifactId>ApiConfig</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>ApiConfig</name>
 
     <properties>

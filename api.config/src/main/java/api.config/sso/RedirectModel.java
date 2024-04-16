@@ -7,6 +7,6 @@ public class RedirectModel {
         this.mode = mode;
     }
     public String url;
-    public Boolean repeat_check;
+    public boolean repeat_check;
     public SsoMode mode;
 }

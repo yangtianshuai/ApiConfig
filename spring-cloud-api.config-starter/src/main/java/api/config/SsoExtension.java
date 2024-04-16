@@ -27,6 +27,9 @@ public class SsoExtension {
 
         _request.OriginScheme = request.getScheme();
         _request.OriginHost = request.getRemoteHost();
+        if(_request.OriginHost.equals("0:0:0:0:0:0:0:1") || _request.OriginHost.equals("::1")){
+            _request.OriginHost = "127.0.0.1";
+        }
         _request.OriginPath = request.getContextPath() + request.getServletPath();
 
         _request.Scheme = _request.OriginScheme;
@@ -77,7 +80,7 @@ public class SsoExtension {
         return _request;
     }
 
-    private static Map<String, List<String>> getQuery(String query) throws MalformedURLException, UnsupportedEncodingException {
+    private static Map<String, List<String>> getQuery(String query) {
 
         Map<String, List<String>> parameters = new HashMap<>();
         if(StringUtil.isNullOrEmpty(query)){
@@ -105,9 +108,14 @@ public class SsoExtension {
     public static void SetSsoPass(HttpServletResponse response)
     {
         response.addHeader(sso_pass_key, "true");
-        AddHeader(response, "Access-Control-Expose-Headers", sso_pass_key, true, ",");
+        HttpExtension.current().addHeader(response, "Access-Control-Expose-Headers", sso_pass_key, true, ",");
     }
-    public static Boolean CheckSso(HttpServletResponse response)
+    public static void setCors(HttpServletResponse response,SsoRequest sso_request){
+        String original_url = sso_request.Scheme + "://" + sso_request.Host + ":" + sso_request.Port;
+        response.addHeader("Access-Control-Allow-Origin", original_url);
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+    }
+    public static boolean CheckSso(HttpServletResponse response)
     {
         String cas = response.getHeader(sso_pass_key);
         if(StringUtil.isNullOrEmpty(cas)){
@@ -116,23 +124,16 @@ public class SsoExtension {
         return cas.equals("true");
     }
 
-    public static void AddHeader(HttpServletResponse response, String header, String value, @Nullable Boolean check,@Nullable String split)
-    {
-        if (response.containsHeader(header))
-        {
-            String header_value = response.getHeader(header);
-            if (check)
-            {
-                if (!header_value.contains(value))
-                {
-                    header_value = header_value + split + value;
-                }
+    public static String getAccessToken(HttpServletRequest request){
+        String key = "access_token";
+        String access_token = request.getHeader(key);
+        if(StringUtil.isNullOrEmpty(access_token)){
+            Map<String, List<String>> queries = getQuery(request.getQueryString());
+            if(queries.containsKey(key)){
+                access_token = queries.get(key).get(0);
             }
-            response.setHeader(header,header_value);
         }
-        else
-        {
-            response.addHeader(header, value);
-        }
+        return access_token;
     }
+
 }

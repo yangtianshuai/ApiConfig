@@ -39,7 +39,7 @@ public class MemoryCacheUnit implements ICacheUnit {
         _cache.put(key, item);
     }
 
-    public Boolean clear(String key) {
+    public boolean clear(String key) {
         if(_cache.containsKey(key)){
             _cache.remove(key);
             return true;

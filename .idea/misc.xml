@@ -8,7 +8,15 @@
         <option value="$PROJECT_DIR$/spring-cloud-starter-api.config/pom.xml" />
         <option value="$PROJECT_DIR$/api.config/pom.xml" />
         <option value="$PROJECT_DIR$/spring-cloud-api.config-starter/pom.xml" />
+        <option value="$PROJECT_DIR$/web.api/pom.xml" />
+        <option value="$USER_HOME$/Desktop/web.api/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$USER_HOME$/Desktop/web.api/pom.xml" />
+        <option value="$PROJECT_DIR$/web.api/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="corretto-1.8" project-jdk-type="JavaSDK">

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class OpenExtention {
 
-    public static Boolean accessCheck(HttpServletRequest request, String path){
+    public static boolean accessCheck(HttpServletRequest request, String path){
         return false;
     }
 

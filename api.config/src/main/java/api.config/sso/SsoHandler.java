@@ -25,7 +25,7 @@ public abstract class SsoHandler implements ISsoHandler {
     }
 
     @Override
-    public Boolean IsLogout(String path)
+    public boolean IsLogout(String path)
     {
         if (path == null)
         {
@@ -35,7 +35,7 @@ public abstract class SsoHandler implements ISsoHandler {
     }
 
     @Override
-    public Boolean Logout(String token,Boolean redirect_flag) throws UnsupportedEncodingException {
+    public boolean Logout(String token,boolean redirect_flag) throws UnsupportedEncodingException {
         SsoCookie cookie = null;
         if (StringUtil.isNullOrEmpty(token) && _request.Query.containsKey(SsoParameter.TICKET)) {
             token = _request.Query.get(SsoParameter.TICKET).get(0);
@@ -74,7 +74,7 @@ public abstract class SsoHandler implements ISsoHandler {
         String response = client.get(url);
         if (response != null) {
             JSONObject res = JSONObject.parseObject(response);
-            if (res.get("code").toString() == "1") {
+            if (res.get("code").toString().equals("1")) {
 
                 SsoCookie cookie = new SsoCookie();
                 cookie.Raw = response;
@@ -96,12 +96,12 @@ public abstract class SsoHandler implements ISsoHandler {
         return false;
     }
 
-    protected Boolean ValidateSSO(Boolean cache_flag) throws UnsupportedEncodingException {
+    protected boolean ValidateSSO(boolean cache_flag) throws UnsupportedEncodingException {
         String ticket = _request.Ticket;
         if(_request.Query.containsKey(CasParameter.TICKET)){
             ticket = _request.Query.get(CasParameter.TICKET).get(0);
         }
-        String service = URLEncoder.encode(_request.GetURL(),"UTF-8");
+        //String service = URLEncoder.encode(_request.GetURL(),"UTF-8");
         String url = "";
         if (cache_flag && Exist(ticket))
         {
@@ -146,10 +146,10 @@ public abstract class SsoHandler implements ISsoHandler {
         return url;
     }
 
-    public abstract Boolean Validate(Boolean cache_flag) throws UnsupportedEncodingException;
+    public abstract boolean Validate(boolean cache_flag) throws UnsupportedEncodingException;
 
     @Override
-    public Boolean Exist(String token)
+    public boolean Exist(String token)
     {
         if (StringUtil.isNullOrEmpty(token) && _request.Query.containsKey(SsoParameter.TICKET))
         {
