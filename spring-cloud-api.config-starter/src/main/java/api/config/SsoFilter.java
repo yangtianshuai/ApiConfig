@@ -4,7 +4,6 @@ import api.config.auth.NoSso;
 import api.config.cache.CacheUnit;
 import api.config.sso.*;
 import api.config.utility.StringUtil;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -66,6 +65,11 @@ public abstract class SsoFilter extends AuthFilter {
         SsoRequest sso_request = SsoExtension.GetRequest(request,_options.Mode);
         sso_request.ClientIP = ClientIp;
         sso_request.Ticket = GetCookieID(request);
+        if (StringUtil.isNullOrEmpty(sso_request.Ticket)
+                && _ssoHandler.IsLogout(sso_request.OriginPath) && sso_request.OriginQuery.containsKey(SsoParameter.TICKET))
+        {
+            sso_request.Ticket = sso_request.OriginQuery.get(SsoParameter.TICKET).get(0);
+        }
         _ssoHandler.SetRequest(sso_request);
 
         //String mapping_url = _ssoHandler.GetOptions().GetBaseURL(request.OriginHost, true);
@@ -102,13 +106,13 @@ public abstract class SsoFilter extends AuthFilter {
                 return false;
             }
 
-            response.addHeader("redirect-url", rt.url);
+            response.setHeader("redirect-url", rt.url);
             SsoExtension.setCors(response,sso_request);
 
             int redirect_status = 302;
             if (rt.mode.equals(SsoMode.Proxy))
             {
-                HttpExtension.current().addHeader(response, "Access-Control-Expose-Headers", "redirect-url", true);
+                response.setHeader("Access-Control-Expose-Headers", "redirect-url");
             }
             response.setStatus(redirect_status);
             return false;

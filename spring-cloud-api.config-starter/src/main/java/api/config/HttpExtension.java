@@ -2,7 +2,6 @@ package api.config;
 
 import api.config.session.ServerSession;
 import api.config.utility.StringUtil;
-import io.micrometer.common.lang.Nullable;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -48,29 +47,11 @@ public class HttpExtension {
         return null;
     }
     protected void setToken(HttpServletResponse response,String key, String token) {
-        addHeader(response, key, token,false);
-        addHeader(response, "Access-Control-Expose-Headers", key, true);
+        response.setHeader(key, token);
+
+        response.setHeader("Access-Control-Allow-Headers", key);
+        response.setHeader("Access-Control-Expose-Headers", key);
     }
 
-    public void addHeader(HttpServletResponse response, String key, String value) {
-        addHeader(response,key,value,false);
-    }
 
-    public void addHeader(HttpServletResponse response, String key, String value, boolean check) {
-        addHeader(response,key,value,check,",");
-    }
-
-    public void addHeader(HttpServletResponse response, String key, String value, boolean check, String split) {
-        if (response.containsHeader(key)) {
-            if (check) {
-                value = response.getHeader(key) + split + value;
-
-            } else {
-                value = response.getHeader(key);
-            }
-            response.setHeader(key, value);
-        } else {
-            response.addHeader(key, value);
-        }
-    }
 }

@@ -4,15 +4,12 @@ package api.config;
 import api.config.sso.SsoMode;
 import api.config.sso.SsoRequest;
 import api.config.utility.StringUtil;
-import io.micrometer.common.lang.Nullable;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -108,7 +105,7 @@ public class SsoExtension {
     public static void SetSsoPass(HttpServletResponse response)
     {
         response.addHeader(sso_pass_key, "true");
-        HttpExtension.current().addHeader(response, "Access-Control-Expose-Headers", sso_pass_key, true, ",");
+        response.setHeader("Access-Control-Allow-Headers", sso_pass_key);
     }
     public static void setCors(HttpServletResponse response,SsoRequest sso_request){
         String original_url = sso_request.Scheme + "://" + sso_request.Host + ":" + sso_request.Port;
