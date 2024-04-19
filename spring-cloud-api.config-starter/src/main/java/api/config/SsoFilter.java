@@ -4,6 +4,7 @@ import api.config.auth.NoSso;
 import api.config.cache.CacheUnit;
 import api.config.sso.*;
 import api.config.utility.StringUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -36,6 +37,8 @@ public abstract class SsoFilter extends AuthFilter {
      * @param cookie
      */
     public abstract void LogoutComplate(SsoCookie cookie);
+
+    protected abstract void setCookie(Cookie cookie);
 
     public abstract String GetCookieID(HttpServletRequest request);
 
