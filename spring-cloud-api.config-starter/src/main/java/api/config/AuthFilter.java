@@ -46,8 +46,10 @@ public abstract class AuthFilter implements HandlerInterceptor {
 
         Cookie cookie = new Cookie(token_key,token);
         cookie.setPath("/");
-        this.response.addCookie(cookie);
+        this.addCookie(cookie);
     }
+
+    protected abstract void addCookie(Cookie cookie);
 
     public String getToken() {
         return HttpExtension.current().getToken(request);
