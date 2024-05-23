@@ -19,4 +19,8 @@ public class AppSetting {
         }
         return null;
     }
+
+    public static void set(ConcurrentHashMap<String,Object> settings){
+        settings = settings;
+    }
 }
