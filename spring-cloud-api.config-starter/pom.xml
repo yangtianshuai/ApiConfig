@@ -20,7 +20,7 @@
 
   <groupId>com.honlivhp</groupId>
   <artifactId>spring-cloud-api.config-starter</artifactId>
-  <version>1.0.7</version>
+  <version>1.0.8</version>
   <name>spring-cloud-api.config-starter</name>
 
   <dependencies>

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -121,11 +122,13 @@ public class SsoExtension {
         return cas.equals("true");
     }
 
-    public static String getAccessToken(HttpServletRequest request){
+    public static String getAccessToken(HttpServletRequest request) throws MalformedURLException {
         String key = "access_token";
         String access_token = request.getHeader(key);
         if(StringUtil.isNullOrEmpty(access_token)){
-            Map<String, List<String>> queries = getQuery(request.getQueryString());
+            String url = request.getHeader("referer");
+            URL uri = new URL(url);
+            Map<String, List<String>> queries = getQuery(uri.getQuery());
             if(queries.containsKey(key)){
                 access_token = queries.get(key).get(0);
             }
